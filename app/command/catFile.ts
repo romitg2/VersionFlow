@@ -23,7 +23,8 @@ class CatFile {
     const content = fs.readFileSync(filePath);
     const decompressed = zlib
       .inflateSync(Buffer.from(content))
-      .toString("utf-8");
+      .toString("utf-8")
+      .split("\x00")[1];
     console.log(decompressed);
   }
 }
