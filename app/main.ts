@@ -1,4 +1,4 @@
-import { Init, Executer, CatFile, HashObject } from "./command";
+import { lsTreeCommand, Init, Executer, CatFile, HashObject } from "./command";
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -7,6 +7,7 @@ enum Commands {
   Init = "init",
   CatFile = "cat-file",
   HashObject = "hash-object",
+  LsTree = "ls-tree",
 }
 
 const executer = new Executer();
@@ -22,8 +23,24 @@ switch (command) {
   case Commands.HashObject:
     handleHashObjectCommand();
     break;
+  case Commands.LsTree:
+    handlelsTreeCommand();
+    break;
   default:
     throw new Error(`Unknown command ${command}`);
+}
+
+function handlelsTreeCommand() {
+  let flag = process.argv[3];
+  let hash = process.argv[4];
+
+  if (!hash) {
+    hash = flag;
+    flag = "";
+  }
+  const command = new lsTreeCommand(flag, hash);
+  executer.execute(command);
+  return;
 }
 
 function handleHashObjectCommand() {
